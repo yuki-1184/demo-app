@@ -1,7 +1,10 @@
-import { Typography, Box } from '@mui/material'
+import { Typography, Box, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { fetchItems } from '../services/fetchApi'
-import { fetchPopularKeywords } from '../services/fetchApi'
+import {
+  // fetchAllItems,
+  fetchItems,
+  fetchPopularKeywords,
+} from '../services/fetchApi'
 import * as React from 'react'
 import ItemCard from '../components/ItemCard'
 
@@ -11,6 +14,7 @@ const Items = () => {
   useEffect(() => {
     fetchItems(setSearchedItems)
     fetchPopularKeywords()
+    // fetchAllItems()
   }, [])
 
   useEffect(() => {
@@ -19,17 +23,19 @@ const Items = () => {
     }
   }, [searchedItems])
   return (
-    <>
+    <Box margin={5}>
       <Typography>商品一覧</Typography>
-      {searchedItems &&
-        searchedItems.hits.map((item, index) => {
-          return (
-            <Box key={index} sx={{ margin: '10px' }}>
-              <ItemCard item={item} />
-            </Box>
-          )
-        })}
-    </>
+      <Stack direction={'row'} overflow={'auto'}>
+        {searchedItems &&
+          searchedItems.hits.map((item, index) => {
+            return (
+              <Box key={index} sx={{ margin: '10px' }}>
+                <ItemCard item={item} />
+              </Box>
+            )
+          })}
+      </Stack>
+    </Box>
   )
 }
 

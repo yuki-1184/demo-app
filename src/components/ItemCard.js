@@ -8,10 +8,10 @@ import Typography from '@mui/material/Typography'
 const ItemCard = (item, index) => {
   console.log(item.item.headLine)
   return (
-    <Card key={index} sx={{ maxWidth: 200 }}>
+    <Card key={index} sx={{ maxWidth: 200, maxHeight: 400 }}>
       <CardContent>
         <Box component="img" src={item.item.image.medium} />
-        <Typography variant="h6" component="div">
+        <Typography fontSize={'14px'} component="div" sx={{ opacity: 0.8 }}>
           {item.item.headLine}
         </Typography>
         <Typography variant="body2">{item.description}</Typography>
