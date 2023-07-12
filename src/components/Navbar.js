@@ -1,31 +1,24 @@
-import React from 'react'
-import { AppBar, Toolbar, CssBaseline, Typography } from '@mui/material'
+import React, { useState } from 'react'
+import { AppBar, Toolbar, CssBaseline, Typography, Box } from '@mui/material'
+import { styled } from '@mui/system'
 import SearchIcon from '@mui/icons-material/Search'
-// import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-// const useStyles = makeStyles((theme) => ({
-//   navlinks: {
-//     marginLeft: theme.spacing(10),
-//     display: 'flex',
-//   },
-//   logo: {
-//     flexGrow: '1',
-//     cursor: 'pointer',
-//   },
-//   link: {
-//     textDecoration: 'none',
-//     color: 'white',
-//     fontSize: '20px',
-//     marginLeft: theme.spacing(20),
-//     '&:hover': {
-//       color: 'yellow',
-//       borderBottom: '1px solid white',
-//     },
-//   },
-// }))
+const StyledForm = styled('form')({
+  display: 'flex',
+  position: 'static',
+  borderRadius: '4px 4px 4px 4px',
+})
 
 function Navbar() {
   // const classes = useStyles()
+  const navigate = useNavigate()
+  const [searchKeyword, setSearchedKeyword] = useState('')
+
+  const handleSubmit = () => {
+    const path = '/searchResult/:' + searchKeyword
+    navigate(path)
+  }
 
   return (
     <AppBar position="static">
@@ -34,15 +27,19 @@ function Navbar() {
         <Typography variant="h4">Yahoo shopping</Typography>
         <div>
           {/* <Link to="/">Home</Link> */}
-          <form>
-            <div></div>
-            <div>
-              <SearchIcon />
-            </div>
-            <div>
-              <input type="text" placeholder="search Yahoo!"></input>
-            </div>
-          </form>
+          <StyledForm onSubmit={handleSubmit}>
+            <Box>
+              <SearchIcon color="black" />
+            </Box>
+            <Box>
+              <input
+                type="text"
+                placeholder="search Yahoo!"
+                value={searchKeyword}
+                onChange={(e) => setSearchedKeyword(e.target.value)}
+              />
+            </Box>
+          </StyledForm>
         </div>
       </Toolbar>
     </AppBar>

@@ -6,13 +6,14 @@ import {
   fetchPopularKeywords,
 } from '../services/fetchApi'
 import * as React from 'react'
-import ItemCard from '../components/ItemCard'
+import ItemCard from '../components/ItemCardSmall'
 
 const Items = () => {
   const [searchedItems, setSearchedItems] = useState()
 
   useEffect(() => {
-    fetchItems(setSearchedItems)
+    const query = '車'
+    fetchItems(query, setSearchedItems)
     fetchPopularKeywords()
     // fetchAllItems()
   }, [])
