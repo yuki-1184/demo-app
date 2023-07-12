@@ -12,7 +12,6 @@ const roundHalf = (num) => {
 }
 
 const ItemCardMedium = (item) => {
-  console.log(item)
   return (
     <>
       <Card sx={{ display: 'flex', maxWidth: '750px' }}>
@@ -47,7 +46,8 @@ const ItemCardMedium = (item) => {
               <Typography
                 variant="subtitle1"
                 color="text.secondary"
-                component="div"
+                component={'div'}
+                sx={{ padding: '0px 5px' }}
               >
                 {item.item.review.count}
               </Typography>
@@ -58,10 +58,9 @@ const ItemCardMedium = (item) => {
                   {item.item.premiumPrice}円
                 </Typography>
                 <Typography
-                  variant="subtitle1"
                   color="text.secondary"
-                  component="div"
-                  textDecoration="line-through"
+                  fontSize={'12px'}
+                  sx={{ textDecoration: 'line-through' }}
                 >
                   {item.item.price}円
                 </Typography>
