@@ -1,12 +1,24 @@
-export async function fetchItems(query, setSearchedItems) {
-  await fetch(
-    `https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch?appid=${process.env.REACT_APP_API_KEY}&query=${query}`,
-    { mode: 'cors' },
-  )
+export async function fetchItems(
+  query,
+  setSearchedItems,
+  condition,
+  start,
+  total,
+) {
+  let URL = `https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch?appid=${process.env.REACT_APP_API_KEY}&query=${query}&sort=-score&results=${total}`
+
+  condition == 'new'
+    ? (URL = `https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch?appid=${process.env.REACT_APP_API_KEY}&query=${query}&sort=-score&results=${total}&condition=new&start=${start}`)
+    : (URL = `https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch?appid=${process.env.REACT_APP_API_KEY}&query=${query}&sort=-score&results=${total}&start=${start}`)
+  condition == 'used'
+    ? (URL = `https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch?appid=${process.env.REACT_APP_API_KEY}&query=${query}&in_stock=true&results=${total}&condition=used&start=${start}`)
+    : (URL = `https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch?appid=${process.env.REACT_APP_API_KEY}&query=${query}&sort=-score&results=${total}&start=${start}`)
+  await fetch(URL, { mode: 'cors' })
     .then((response) => {
       return response.json()
     })
     .then((data) => {
+      console.log(data)
       setSearchedItems(data)
     })
 }
@@ -20,45 +32,21 @@ export async function fetchItemDetail(itemcode, setItemDetail) {
       return response.json()
     })
     .then((data) => {
-      console.log(data.ResultSet['0'].Result['0'])
       setItemDetail(data.ResultSet['0'].Result['0'])
     })
 }
 
-export async function fetchAllItems() {
-  const URL =
-    'https://circus.shopping.yahooapis.jp/ShoppingWebService/V1/myItemList?seller_id=teststore&start=1&results=50&query=%BE%A6%C9%CA%A3%B1&type=name&sort=%2Bitem_code'
-  // const APIKEY = process.env.REACT_APP_API_KEY
-
-  // const requestOptions = {
-  //   method: 'GET',
-  //   headers: {
-  //     Authorization: `Bearer ${APIKEY}`,
-  //   },
-  //   mode: 'cors',
-  // }
-
-  let response = await fetch(URL, { mode: 'cors' })
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`)
-  } else {
-    let data = await response.json()
-    return data
-  }
-}
-
-export async function fetchPopularKeywords() {
-  const type = 'ranking'
+export async function fetchTrendingItems(genre_id, setPopularItems) {
   await fetch(
-    `https://shopping.yahooapis.jp/ShoppingWebService/V2/queryRanking?appid=${process.env.REACT_APP_API_KEY}&type=${type}`,
+    `https://shopping.yahooapis.jp/ShoppingWebService/V1/highRatingTrendRanking?appid=${process.env.REACT_APP_API_KEY}&genre_category_id=${genre_id}&results=10`,
     { mode: 'cors' },
   )
     .then((response) => {
       return response.json()
     })
     .then((data) => {
-      console.log(data)
+      setPopularItems((prevItems) => ({ ...prevItems, [genre_id]: data }))
+      return data
     })
 }
 

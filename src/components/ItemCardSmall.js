@@ -12,7 +12,8 @@ const ItemCard = (item, index) => {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    const path = '/items/:' + item.item.code
+    const path =
+      '/items/:' + item.item.seller.id + '_' + item.item.item_information.code
     navigate(path)
   }
 
@@ -25,7 +26,7 @@ const ItemCard = (item, index) => {
       <CardContent>
         <Box component="img" src={item.item.image.medium} />
         <Typography fontSize={'14px'} component="div" sx={{ opacity: 0.8 }}>
-          {item.item.headLine}
+          {item.item.item_information.name.slice(0, 30)}...
         </Typography>
         <Typography variant="body2">{item.description}</Typography>
       </CardContent>
