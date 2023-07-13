@@ -12,7 +12,8 @@ const ItemCard = (item, index) => {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    const path = '/items/:' + item.item.code
+    const path =
+      '/items/:' + item.item.seller.id + '_' + item.item.item_information.code
     navigate(path)
   }
 

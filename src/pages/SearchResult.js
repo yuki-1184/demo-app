@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { fetchItems } from '../services/fetchApi'
 import {
   Backdrop,
@@ -14,28 +14,36 @@ import {
 } from '@mui/material'
 import ItemCardMedium from '../components/ItemCardMedium'
 
+const TOTAL = 25
+
 const countPages = (total) => {
-  const totalPages = Math.floor(total / 25)
+  const totalPages = Math.floor(total / TOTAL)
   return totalPages
 }
 
 const SearchResult = () => {
   const { keyword } = useParams()
+  const navigate = useNavigate()
   const [searchResult, setSearchResult] = useState()
   const [condition, setCondition] = useState('initial')
   const [pageNumber, setPageNumber] = useState(1)
 
   useEffect(() => {
-    const start = (pageNumber - 1) * 25 + 1
+    const start = (pageNumber - 1) * TOTAL + 1
     setTimeout(() => {
-      fetchItems(keyword.substring(1), setSearchResult, condition, start)
+      fetchItems(keyword.substring(1), setSearchResult, condition, start, TOTAL)
     }, '1000')
   }, [keyword, condition, pageNumber])
+
+  const handleClick = (itemcode) => {
+    const path = '/items/:' + itemcode
+    navigate(path)
+  }
 
   return (
     <Box sx={{ margin: '20px 80px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography>商品検索結果</Typography>
+        <Typography fontSize={'24px'}>商品検索結果</Typography>
         <FormControl>
           <InputLabel id="demo-simple-select-label">Condition</InputLabel>
           <Select
@@ -62,6 +70,7 @@ const SearchResult = () => {
             <Box
               key={index}
               sx={{ display: 'flex', justifyContent: 'center', margin: '20px' }}
+              onClick={() => handleClick(item.code)}
             >
               <ItemCardMedium item={item} />
             </Box>
