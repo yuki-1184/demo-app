@@ -1,40 +1,61 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { fetchItems } from '../services/fetchApi'
-import { Backdrop, CircularProgress, Box, Button } from '@mui/material'
+import {
+  Backdrop,
+  CircularProgress,
+  Box,
+  Pagination,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@mui/material'
 import ItemCardMedium from '../components/ItemCardMedium'
 
-const countPages = (total, setEnd) => {
-  const totalPages = Math.floor(total / 20)
-  setEnd(totalPages)
+const countPages = (total) => {
+  const totalPages = Math.floor(total / 25)
   return totalPages
 }
 
 const SearchResult = () => {
   const { keyword } = useParams()
   const [searchResult, setSearchResult] = useState()
-  const [pageCount, setPageCount] = useState(0)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [condition, setCondition] = useState('initial')
+  const [pageNumber, setPageNumber] = useState(1)
 
   useEffect(() => {
+    const start = (pageNumber - 1) * 25 + 1
     setTimeout(() => {
-      fetchItems(keyword.substring(1), setSearchResult)
+      fetchItems(keyword.substring(1), setSearchResult, condition, start)
     }, '1000')
-    if (searchResult) {
-      countPages(searchResult.totalResultsAvailable, setPageCount)
-      console.log(searchResult)
-    }
-  }, [keyword])
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber)
-  }
-
-  const firstPageNumber = Math.max(0, currentPage - Math.floor(pageCount / 2))
-  const lastPageNumber = Math.min(pageCount, firstPageNumber + 5)
+  }, [keyword, condition, pageNumber])
 
   return (
-    <>
+    <Box sx={{ margin: '20px 80px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Typography>商品検索結果</Typography>
+        <FormControl>
+          <InputLabel id="demo-simple-select-label">Condition</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={condition}
+            label="Condition"
+            sx={{
+              width: '150px',
+            }}
+            onChange={(e) => setCondition(e.target.value)}
+          >
+            <MenuItem value="initial" selected>
+              新品・中古
+            </MenuItem>
+            <MenuItem value="new">新品</MenuItem>
+            <MenuItem value="used">中古</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
       {searchResult ? (
         searchResult.hits.map((item, index) => {
           return (
@@ -57,34 +78,15 @@ const SearchResult = () => {
       <Box
         sx={{ display: 'flex', justifyContent: 'center', margin: '20px 80px' }}
       >
-        <div>
-          <Button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 0}
-          >
-            Previous
-          </Button>
-          {Array.from(
-            { length: lastPageNumber - firstPageNumber },
-            (_, i) => i + firstPageNumber,
-          ).map((_, index) => (
-            <Button
-              key={index}
-              onClick={() => handlePageChange(index)}
-              disabled={index === currentPage}
-            >
-              {index + 1}
-            </Button>
-          ))}
-          <Button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === pageCount - 1}
-          >
-            Next
-          </Button>
-        </div>
+        {searchResult && (
+          <Pagination
+            count={countPages(searchResult.totalResultsAvailable)}
+            color="primary"
+            onChange={(e, pageNumber) => setPageNumber(pageNumber)}
+          />
+        )}
       </Box>
-    </>
+    </Box>
   )
 }
 
