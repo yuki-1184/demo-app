@@ -25,7 +25,7 @@ const ItemCard = (item, index) => {
     >
       <CardContent>
         <Box component="img" src={item.item.image.medium} />
-        <Typography fontSize={'14px'} component="div" sx={{ opacity: 0.8 }}>
+        <Typography fontSize={'14px'} sx={{ opacity: 0.8 }}>
           {item.item.item_information.name.slice(0, 30)}...
         </Typography>
         <Typography variant="body2">{item.description}</Typography>

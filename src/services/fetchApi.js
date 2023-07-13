@@ -1,3 +1,4 @@
+/* eslint-disable */
 export async function fetchItems(
   query,
   setSearchedItems,
@@ -49,5 +50,3 @@ export async function fetchTrendingItems(genre_id, setPopularItems) {
       return data
     })
 }
-
-// export aync function trendingItems
