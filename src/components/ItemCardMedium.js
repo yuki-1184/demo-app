@@ -1,15 +1,5 @@
-import {
-  Card,
-  CardContent,
-  Box,
-  Typography,
-  CardMedia,
-  Rating,
-} from '@mui/material'
-
-const roundHalf = (num) => {
-  return Math.round(num * 2) / 2
-}
+import { Card, CardContent, Box, Typography, CardMedia } from '@mui/material'
+import RatingView from './common/RatingView'
 
 const ItemCardMedium = (item) => {
   return (
@@ -36,22 +26,10 @@ const ItemCardMedium = (item) => {
             >
               {item.item.headLine}
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Rating
-                name="half-rating"
-                precision={0.5}
-                value={roundHalf(item.item.review.rate)}
-                readOnly
-              ></Rating>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component={'div'}
-                sx={{ padding: '0px 5px' }}
-              >
-                {item.item.review.count}
-              </Typography>
-            </Box>
+            <RatingView
+              rate={item.item.review.rate}
+              count={item.item.review.count}
+            />
             {item.item.premiumPriceStatus ? (
               <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
                 <Typography component="div" fontSize={'20px'}>

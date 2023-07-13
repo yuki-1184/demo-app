@@ -11,7 +11,7 @@ export const App = () => {
       <Routes>
         <Route path="/" element={<Navigate to="/items" replace />}></Route>
         <Route path="/items" element={<Items />}></Route>
-        <Route path="/items/:id" element={<ItemDetail />}></Route>
+        <Route path="/items/:code" element={<ItemDetail />}></Route>
         <Route path="/searchResult/:keyword" element={<SearchResult />}></Route>
       </Routes>
     </BrowserRouter>

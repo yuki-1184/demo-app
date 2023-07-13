@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import { AppBar, Toolbar, CssBaseline, Typography, Box } from '@mui/material'
+import {
+  AppBar,
+  Toolbar,
+  CssBaseline,
+  Typography,
+  Box,
+  Link,
+} from '@mui/material'
 import { styled } from '@mui/system'
 import SearchIcon from '@mui/icons-material/Search'
 import { useNavigate } from 'react-router-dom'
@@ -24,7 +31,11 @@ function Navbar() {
     <AppBar position="static">
       <CssBaseline />
       <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <Typography variant="h4">Yahoo shopping</Typography>
+        <Link href="/items">
+          <Typography variant="h4" color={'white'}>
+            Yahoo shopping
+          </Typography>
+        </Link>
         <div>
           {/* <Link to="/">Home</Link> */}
           <StyledForm onSubmit={handleSubmit}>

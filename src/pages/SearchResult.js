@@ -38,7 +38,10 @@ const SearchResult = () => {
       {searchResult ? (
         searchResult.hits.map((item, index) => {
           return (
-            <Box key={index} sx={{ margin: '20px' }}>
+            <Box
+              key={index}
+              sx={{ display: 'flex', justifyContent: 'center', margin: '20px' }}
+            >
               <ItemCardMedium item={item} />
             </Box>
           )

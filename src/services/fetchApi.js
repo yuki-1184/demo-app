@@ -11,20 +11,34 @@ export async function fetchItems(query, setSearchedItems) {
     })
 }
 
+export async function fetchItemDetail(itemcode, setItemDetail) {
+  await fetch(
+    `https://shopping.yahooapis.jp/ShoppingWebService/V1/json/itemLookup?appid=${process.env.REACT_APP_API_KEY}&itemcode=${itemcode}&image_size=600&responsegroup=large`,
+    { mode: 'cors' },
+  )
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      console.log(data.ResultSet['0'].Result['0'])
+      setItemDetail(data.ResultSet['0'].Result['0'])
+    })
+}
+
 export async function fetchAllItems() {
   const URL =
-    'https://test.circus.shopping.yahooapis.jp/ShoppingWebService/V1/getItem?seller_id=teststore&item_code=item1'
-  const APIKEY = process.env.REACT_APP_API_KEY
+    'https://circus.shopping.yahooapis.jp/ShoppingWebService/V1/myItemList?seller_id=teststore&start=1&results=50&query=%BE%A6%C9%CA%A3%B1&type=name&sort=%2Bitem_code'
+  // const APIKEY = process.env.REACT_APP_API_KEY
 
-  const requestOptions = {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${APIKEY}`,
-    },
-    mode: 'cors',
-  }
+  // const requestOptions = {
+  //   method: 'GET',
+  //   headers: {
+  //     Authorization: `Bearer ${APIKEY}`,
+  //   },
+  //   mode: 'cors',
+  // }
 
-  let response = await fetch(URL, requestOptions)
+  let response = await fetch(URL, { mode: 'cors' })
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`)
